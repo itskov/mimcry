@@ -1,5 +1,0 @@
-_background_
-Polygon 1
-Polygon 2
-Polygon 3
-Polygon 4

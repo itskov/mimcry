@@ -35,31 +35,33 @@ def main():
     for i, current_data_dir in enumerate(Path(source_dir).rglob("data_*")):
         print('%d. Working on: %s' % (i, current_data_dir))
 
-        input_file = path.join(str(current_data_dir), 'img.png')
-        output_file = path.join(str(current_data_dir), 'label.png')
 
-        input_file_mat = plt.imread(input_file)
-        output_file_mat = plt.imread(output_file)
+        try:
+            input_file = path.join(str(current_data_dir), 'img.png')
+            output_file = path.join(str(current_data_dir), 'label.png')
+            input_file_mat = plt.imread(input_file)
+            output_file_mat = plt.imread(output_file)
 
-        # Resizing the square picture, so we would be able to rotate it.
-        input_file_mat = imresize(input_file_mat, (500, 500))
-        output_file_mat = imresize(output_file_mat, (500, 500))
+            # Resizing the square picture, so we would be able to rotate it.
+            input_file_mat = imresize(input_file_mat, (500, 500))
+            output_file_mat = imresize(output_file_mat, (500, 500))
 
-        output_file_mat = np.sum(output_file_mat, axis=2)
-        output_file_mat = (output_file_mat != 0).astype(np.int8)
+            output_file_mat = np.sum(output_file_mat, axis=2)
+            output_file_mat = (output_file_mat != 0).astype(np.int8)
 
-        #plt.imshow(output_file_mat)
-        #plt.show()
-
-        generate_final_sample(output_dir, input_file_mat, output_file_mat)
-
-
-        for i in range(3):
-            # Rotations
-            input_file_mat = np.asarray(Image.fromarray(input_file_mat).rotate(90))
-            output_file_mat = np.asarray(Image.fromarray(output_file_mat).rotate(90))
+            #plt.imshow(output_file_mat)
+            #plt.show()
 
             generate_final_sample(output_dir, input_file_mat, output_file_mat)
+
+            for i in range(3):
+                # Rotations
+                input_file_mat = np.asarray(Image.fromarray(input_file_mat).rotate(90))
+                output_file_mat = np.asarray(Image.fromarray(output_file_mat).rotate(90))
+
+                generate_final_sample(output_dir, input_file_mat, output_file_mat)
+        except:
+            print('Error.')
 
 
 
